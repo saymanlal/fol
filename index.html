@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ancient Letter</title>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 * {
@@ -14,249 +16,325 @@
 }
 
 body {
-  background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 70%);
-  height: 100vh;
+  background: #000000;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(15, 10, 25, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(20, 15, 30, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #0a0a15 0%, #000000 100%);
+  min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Georgia', serif;
+  perspective: 1500px;
+  font-family: 'Kalam', cursive;
 }
 
-/* Golden sparks floating */
-.spark {
+/* Tiny golden star sparkles */
+.star {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #ffd700;
-  border-radius: 50%;
-  box-shadow: 0 0 6px #ffd700, 0 0 12px rgba(255, 215, 0, 0.4);
-  animation: sparkFloat 8s infinite ease-in-out;
-  pointer-events: none;
+  background: #d4af37;
+  opacity: 0;
+  animation: starTwinkle 5s infinite ease-in-out;
+  clip-path: polygon(
+    50% 0%, 
+    61% 35%, 
+    98% 35%, 
+    68% 57%, 
+    79% 91%, 
+    50% 70%, 
+    21% 91%, 
+    32% 57%, 
+    2% 35%, 
+    39% 35%
+  );
 }
 
-@keyframes sparkFloat {
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.6; }
+}
+
+/* Floating animation */
+@keyframes letterFloat {
   0%, 100% { 
-    transform: translateY(0) translateX(0); 
-    opacity: 0.4;
-  }
-  25% {
-    opacity: 0.8;
+    transform: translateY(0) rotateX(8deg);
   }
   50% { 
-    transform: translateY(-25px) translateX(15px); 
-    opacity: 1;
-  }
-  75% {
-    opacity: 0.6;
+    transform: translateY(-18px) rotateX(12deg);
   }
 }
 
-/* Closed rolled letter */
-.letter-container {
-  perspective: 1200px;
-}
-
+/* Closed Rolled Letter */
 .letter-closed {
   position: relative;
-  width: 320px;
-  height: 420px;
+  width: 340px;
+  height: 75px;
   cursor: pointer;
+  animation: letterFloat 5s ease-in-out infinite;
+  transition: transform 0.4s ease;
   transform-style: preserve-3d;
-  transition: transform 0.6s ease;
 }
 
 .letter-closed:hover {
-  transform: translateY(-15px) rotateX(8deg);
+  transform: translateY(-12px) rotateX(12deg);
+  animation-play-state: paused;
 }
 
-.rolled-paper {
+/* Old parchment roll */
+.paper-roll {
   position: relative;
   width: 100%;
   height: 100%;
-  background: linear-gradient(145deg, #f4ead5 0%, #e8dcc0 50%, #d9cdb1 100%);
-  border-radius: 8px;
+  background: 
+    linear-gradient(90deg,
+      #8b7355 0%,
+      #c9a876 5%,
+      #d4b896 15%,
+      #e8d5b7 25%,
+      #f0e5d0 40%,
+      #e8d5b7 60%,
+      #d4b896 75%,
+      #c9a876 85%,
+      #8b7355 100%
+    );
+  border-radius: 50% / 40%;
   box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.2);
-  transform: rotateX(12deg);
+    0 20px 40px rgba(0, 0, 0, 0.7),
+    inset 0 3px 8px rgba(255, 255, 255, 0.2),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.3);
+  transform: rotateX(8deg);
+}
+
+/* Burnt edges effect */
+.paper-roll::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(ellipse 40% 30% at 10% 20%, rgba(60, 40, 20, 0.5) 0%, transparent 40%),
+    radial-gradient(ellipse 35% 25% at 90% 25%, rgba(60, 40, 20, 0.4) 0%, transparent 40%),
+    radial-gradient(ellipse 30% 20% at 15% 80%, rgba(60, 40, 20, 0.3) 0%, transparent 35%),
+    radial-gradient(ellipse 35% 25% at 85% 75%, rgba(60, 40, 20, 0.4) 0%, transparent 40%);
+  border-radius: 50% / 40%;
+  pointer-events: none;
 }
 
 /* Paper texture */
-.rolled-paper::before {
+.paper-roll::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: 
     repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 19px,
-      rgba(0, 0, 0, 0.02) 20px
-    ),
-    repeating-linear-gradient(
       0deg,
-      transparent,
-      transparent 19px,
-      rgba(0, 0, 0, 0.02) 20px
+      transparent 0px,
+      rgba(0, 0, 0, 0.02) 1px,
+      transparent 2px
     );
-  border-radius: 8px;
-  pointer-events: none;
+  border-radius: 50% / 40%;
+  opacity: 0.3;
 }
 
-/* Paper roll edges */
-.rolled-paper::after {
-  content: '';
+/* Left edge of roll */
+.paper-edge-left {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: linear-gradient(to bottom, rgba(232, 220, 192, 0.8) 0%, transparent 100%);
-  border-radius: 8px 8px 0 0;
+  top: 50%;
+  left: -4px;
+  width: 8px;
+  height: 100%;
+  background: radial-gradient(ellipse at left, #8b7355 0%, #6d5a43 100%);
+  border-radius: 50% 0 0 50%;
+  transform: translateY(-50%);
+  box-shadow: inset -2px 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Red ribbon wrapping */
+/* Right edge of roll */
+.paper-edge-right {
+  position: absolute;
+  top: 50%;
+  right: -4px;
+  width: 8px;
+  height: 100%;
+  background: radial-gradient(ellipse at right, #8b7355 0%, #6d5a43 100%);
+  border-radius: 0 50% 50% 0;
+  transform: translateY(-50%);
+  box-shadow: inset 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Red ribbon */
 .ribbon {
   position: absolute;
   width: 100%;
-  height: 60px;
+  height: 40px;
   top: 50%;
   transform: translateY(-50%);
-  background: linear-gradient(135deg, #c41e3a 0%, #8b1428 50%, #6d0e1f 100%);
-  box-shadow: 
-    0 6px 20px rgba(0, 0, 0, 0.6),
-    inset 0 2px 2px rgba(255, 255, 255, 0.2),
-    inset 0 -2px 2px rgba(0, 0, 0, 0.3);
-  z-index: 2;
+  z-index: 5;
 }
 
-.ribbon::before,
-.ribbon::after {
+.ribbon-band {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    #b8002f 0%,
+    #8b0000 50%,
+    #6d0000 100%
+  );
+  box-shadow: 
+    0 6px 18px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.25),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Ribbon shine */
+.ribbon-band::before {
   content: '';
   position: absolute;
-  width: 80px;
-  height: 50px;
-  background: radial-gradient(ellipse, #a01828 0%, #6d0e1f 70%);
-  top: 50%;
-  border-radius: 50%;
-  box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+  top: 6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
 }
 
-.ribbon::before {
-  left: -30px;
-  transform: translateY(-50%) rotate(-25deg);
-}
-
-.ribbon::after {
-  right: -30px;
-  transform: translateY(-50%) rotate(25deg);
-}
-
-/* Ribbon knot */
-.ribbon-knot {
+/* Ribbon bow center */
+.ribbon-bow {
   position: absolute;
-  width: 50px;
-  height: 50px;
-  background: radial-gradient(circle at 35% 35%, #d42a3f 0%, #8b1428 60%);
-  border-radius: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3;
-  box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.7),
-    inset 0 3px 6px rgba(255, 255, 255, 0.25),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  width: 60px;
+  height: 60px;
+  z-index: 6;
 }
 
-/* Opened letter */
+.bow-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle at 35% 35%, #b8002f 0%, #6d0000 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.7),
+    inset 0 2px 3px rgba(255, 255, 255, 0.2);
+}
+
+.bow-left,
+.bow-right {
+  position: absolute;
+  width: 32px;
+  height: 40px;
+  background: linear-gradient(135deg, #b8002f 0%, #6d0000 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.bow-left {
+  top: 50%;
+  left: -2px;
+  transform: translateY(-50%) rotate(-30deg);
+}
+
+.bow-right {
+  top: 50%;
+  right: -2px;
+  transform: translateY(-50%) rotate(30deg);
+}
+
+/* Opened Letter */
 .letter-open {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0) rotateY(90deg);
+  transform: translate(-50%, -50%) scale(0);
   width: 480px;
-  max-width: 92vw;
-  max-height: 85vh;
-  background: linear-gradient(145deg, #f9f3e5 0%, #efe8d8 100%);
-  border-radius: 16px;
-  padding: 45px 40px;
+  max-width: 90vw;
+  max-height: 82vh;
+  background: 
+    radial-gradient(ellipse at 20% 10%, rgba(240, 230, 210, 1) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 90%, rgba(230, 220, 200, 1) 0%, transparent 40%),
+    linear-gradient(135deg, #f0e5d0 0%, #e8d5b7 100%);
+  border-radius: 18px;
+  padding: 48px 42px;
   box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.9),
-    0 0 0 1px rgba(255, 215, 0, 0.15);
+    0 40px 80px rgba(0, 0, 0, 0.85),
+    0 0 60px rgba(212, 175, 55, 0.15);
   opacity: 0;
   z-index: 100;
-  transition: all 1s cubic-bezier(0.25, 1, 0.3, 1);
   overflow-y: auto;
+  transition: all 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .letter-open.active {
-  transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+  transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
 
-/* Glowing border effect when open */
+/* Burnt edges on open letter */
 .letter-open::before {
   content: '';
   position: absolute;
-  inset: -3px;
-  background: linear-gradient(45deg, #ffd700, #c41e3a, #ffd700, #c41e3a);
-  background-size: 300% 300%;
+  inset: -1px;
+  background-image: 
+    radial-gradient(ellipse 100px 80px at 5% 5%, rgba(80, 50, 30, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse 90px 70px at 95% 8%, rgba(70, 45, 25, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 85px 65px at 8% 92%, rgba(75, 48, 28, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 95px 75px at 92% 95%, rgba(80, 50, 30, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse 60px 50px at 50% 2%, rgba(70, 45, 25, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse 60px 50px at 50% 98%, rgba(70, 45, 25, 0.4) 0%, transparent 50%);
   border-radius: 18px;
-  z-index: -1;
-  opacity: 0;
-  filter: blur(12px);
-  animation: borderGlow 3s ease infinite;
-  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.letter-open.active::before {
-  opacity: 0.6;
-}
-
-@keyframes borderGlow {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-/* Paper texture for open letter */
+/* Paper texture */
 .letter-open::after {
   content: '';
   position: absolute;
   inset: 0;
   background-image: 
     repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 24px,
-      rgba(0, 0, 0, 0.015) 25px
-    ),
-    repeating-linear-gradient(
       0deg,
-      transparent,
-      transparent 24px,
-      rgba(0, 0, 0, 0.015) 25px
+      transparent 0px,
+      rgba(0, 0, 0, 0.015) 1px,
+      transparent 26px
     );
-  border-radius: 16px;
+  border-radius: 18px;
   pointer-events: none;
-}
-
-.letter-content {
-  position: relative;
+  opacity: 0.4;
   z-index: 1;
 }
 
+/* Letter content */
+.letter-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Handwritten text - readable cursive */
 .letter-text {
-  color: #2a241c;
-  font-size: 17px;
-  line-height: 1.9;
+  color: #2a1f15;
+  font-family: 'Kalam', cursive;
+  font-size: 19px;
+  line-height: 1.7;
   white-space: pre-line;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
   opacity: 0;
   transform: translateY(30px);
-  transition: all 1.2s ease 0.4s;
+  transition: all 1s ease 0.4s;
+  letter-spacing: 0.3px;
+  font-weight: 400;
 }
 
 .letter-open.active .letter-text {
@@ -264,14 +342,14 @@ body {
   transform: translateY(0);
 }
 
-/* Character-by-character reveal */
-.letter-text span {
+/* Word reveal animation */
+.letter-text .word {
   display: inline-block;
   opacity: 0;
-  animation: charReveal 0.4s forwards;
+  animation: wordFade 0.5s forwards;
 }
 
-@keyframes charReveal {
+@keyframes wordFade {
   to {
     opacity: 1;
   }
@@ -281,14 +359,15 @@ body {
 .signature {
   margin-top: 40px;
   text-align: right;
-  font-family: 'Dancing Script', cursive;
-  font-size: 28px;
-  color: #8b1428;
+  font-family: 'Kalam', cursive;
+  font-size: 26px;
+  font-weight: 700;
+  color: #6d0000;
   opacity: 0;
   transform: translateX(30px);
-  transition: all 1s ease 1.2s;
+  transition: all 0.9s ease 1.2s;
   cursor: pointer;
-  padding: 12px 0;
+  padding: 12px 8px;
   user-select: none;
   position: relative;
 }
@@ -298,126 +377,122 @@ body {
   transform: translateX(0);
 }
 
-.signature::before {
+.signature:hover {
+  color: #8b0000;
+  transform: translateX(-6px) scale(1.03);
+}
+
+/* Underline effect */
+.signature::after {
   content: '';
   position: absolute;
   bottom: 8px;
   right: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(to left, #8b1428, transparent);
+  background: #6d0000;
   transition: width 0.6s ease;
 }
 
-.signature:hover::before {
+.signature:hover::after {
   width: 100%;
 }
 
-.signature:hover {
-  color: #c41e3a;
-  transform: translateX(-5px);
-}
-
-/* Magic dust particles */
-.magic-dust {
+/* Magic particles */
+.particle {
   position: fixed;
   width: 5px;
   height: 5px;
-  background: #ffd700;
-  border-radius: 50%;
   pointer-events: none;
   z-index: 999;
-  box-shadow: 0 0 10px #ffd700, 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-/* Instructions hint */
-.hint {
-  position: fixed;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 13px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  animation: hintPulse 2.5s ease-in-out infinite;
-  z-index: 10;
-  pointer-events: none;
-}
-
-@keyframes hintPulse {
-  0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 0.9; transform: translateX(-50%) translateY(-5px); }
+  border-radius: 50%;
+  background: radial-gradient(circle, #d4af37 0%, transparent 70%);
+  box-shadow: 0 0 12px #d4af37;
 }
 
 /* Responsive */
 @media (max-width: 550px) {
   .letter-closed {
-    width: 280px;
-    height: 380px;
+    width: 290px;
+    height: 65px;
+  }
+  
+  .ribbon {
+    height: 36px;
   }
   
   .letter-open {
-    padding: 35px 28px;
+    padding: 38px 32px;
   }
   
   .letter-text {
-    font-size: 15.5px;
+    font-size: 17px;
+    line-height: 1.65;
   }
   
   .signature {
-    font-size: 24px;
-  }
-  
-  .hint {
-    font-size: 11px;
-    bottom: 20px;
+    font-size: 23px;
   }
 }
 
 @media (max-width: 380px) {
   .letter-closed {
-    width: 240px;
-    height: 340px;
+    width: 260px;
+    height: 58px;
+  }
+  
+  .letter-text {
+    font-size: 16px;
+  }
+  
+  .signature {
+    font-size: 21px;
   }
 }
 
-/* Hide scrollbar but keep functionality */
+/* Scrollbar */
 .letter-open::-webkit-scrollbar {
-  width: 6px;
+  width: 7px;
 }
 
 .letter-open::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
 }
 
 .letter-open::-webkit-scrollbar-thumb {
-  background: rgba(139, 20, 40, 0.3);
-  border-radius: 3px;
+  background: rgba(109, 0, 0, 0.3);
+  border-radius: 10px;
 }
 
 .letter-open::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 20, 40, 0.5);
+  background: rgba(109, 0, 0, 0.5);
 }
 </style>
 </head>
 
 <body>
-  <!-- Floating golden sparks -->
-  <div id="sparks"></div>
+  <!-- Stars container -->
+  <div id="stars"></div>
 
-  <!-- Closed rolled letter -->
-  <div class="letter-container">
-    <div class="letter-closed" id="closedLetter">
-      <div class="rolled-paper"></div>
-      <div class="ribbon">
-        <div class="ribbon-knot"></div>
+  <!-- Closed Letter -->
+  <div class="letter-closed" id="letterClosed">
+    <div class="paper-edge-left"></div>
+    <div class="paper-roll"></div>
+    <div class="paper-edge-right"></div>
+    
+    <div class="ribbon">
+      <div class="ribbon-band"></div>
+      <div class="ribbon-bow">
+        <div class="bow-left"></div>
+        <div class="bow-right"></div>
+        <div class="bow-center"></div>
       </div>
     </div>
   </div>
 
-  <!-- Opened letter -->
-  <div class="letter-open" id="openLetter">
+  <!-- Opened Letter -->
+  <div class="letter-open" id="letterOpen">
     <div class="letter-content">
       <div class="letter-text" id="letterText">Take care of your health.
 Padhai aur baaki kaam zaruri hain,
@@ -438,49 +513,46 @@ tab baat karenge.</div>
     </div>
   </div>
 
-  <!-- Hint text -->
-  <div class="hint" id="hint">Click the letter to open</div>
-
 <script>
-// Create floating golden sparks
-function createSparks() {
-  const container = document.getElementById('sparks');
-  const sparkCount = 70;
+// Create cosmic stars
+function createStars() {
+  const container = document.getElementById('stars');
+  const starCount = 50;
   
-  for (let i = 0; i < sparkCount; i++) {
-    const spark = document.createElement('div');
-    spark.className = 'spark';
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
     
+    const size = Math.random() * 2 + 0.8;
     const x = Math.random() * window.innerWidth;
     const y = Math.random() * window.innerHeight;
-    const size = Math.random() * 2.5 + 1;
-    const duration = Math.random() * 6 + 6;
-    const delay = Math.random() * 8;
+    const duration = Math.random() * 4 + 4;
+    const delay = Math.random() * 6;
     
-    spark.style.left = x + 'px';
-    spark.style.top = y + 'px';
-    spark.style.width = size + 'px';
-    spark.style.height = size + 'px';
-    spark.style.animationDuration = duration + 's';
-    spark.style.animationDelay = delay + 's';
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = x + 'px';
+    star.style.top = y + 'px';
+    star.style.animationDuration = duration + 's';
+    star.style.animationDelay = delay + 's';
     
-    container.appendChild(spark);
+    container.appendChild(star);
   }
 }
 
-// Create magical dust particles
-function createMagicDust(x, y, count) {
+// Create magic particles
+function createParticles(x, y, count) {
   for (let i = 0; i < count; i++) {
-    const dust = document.createElement('div');
-    dust.className = 'magic-dust';
-    dust.style.left = x + 'px';
-    dust.style.top = y + 'px';
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = x + 'px';
+    particle.style.top = y + 'px';
     
-    const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
-    const velocity = 2 + Math.random() * 4;
-    const life = 1000 + Math.random() * 1000;
+    document.body.appendChild(particle);
     
-    document.body.appendChild(dust);
+    const angle = (Math.PI * 2 * i) / count;
+    const speed = 2.5 + Math.random() * 3;
+    const lifetime = 1200 + Math.random() * 800;
     
     let startTime = Date.now();
     let posX = x;
@@ -488,20 +560,23 @@ function createMagicDust(x, y, count) {
     
     function animate() {
       const elapsed = Date.now() - startTime;
-      const progress = elapsed / life;
+      const progress = elapsed / lifetime;
       
       if (progress < 1) {
-        posX += Math.cos(angle) * velocity;
-        posY += Math.sin(angle) * velocity - 2;
+        posX += Math.cos(angle) * speed;
+        posY += Math.sin(angle) * speed - 2.5;
         
-        dust.style.left = posX + 'px';
-        dust.style.top = posY + 'px';
-        dust.style.opacity = 1 - progress;
-        dust.style.transform = 'scale(' + (1 - progress * 0.5) + ')';
+        const opacity = 1 - progress;
+        const scale = 1 - progress * 0.6;
+        
+        particle.style.left = posX + 'px';
+        particle.style.top = posY + 'px';
+        particle.style.opacity = opacity;
+        particle.style.transform = 'scale(' + scale + ')';
         
         requestAnimationFrame(animate);
       } else {
-        dust.remove();
+        particle.remove();
       }
     }
     
@@ -510,40 +585,38 @@ function createMagicDust(x, y, count) {
 }
 
 // Open letter
-function openLetter(e) {
-  const closedLetter = document.getElementById('closedLetter');
-  const openLetter = document.getElementById('openLetter');
-  const hint = document.getElementById('hint');
+function openLetter() {
+  const letterClosed = document.getElementById('letterClosed');
+  const letterOpen = document.getElementById('letterOpen');
   const letterText = document.getElementById('letterText');
   
-  const rect = closedLetter.getBoundingClientRect();
+  const rect = letterClosed.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
   
-  // Create magic effect
-  createMagicDust(x, y, 40);
+  // Create particle effect
+  createParticles(x, y, 35);
   
   // Hide closed letter
-  closedLetter.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-  closedLetter.style.transform = 'translateY(-120px) rotateX(90deg) scale(0.3)';
-  closedLetter.style.opacity = '0';
+  letterClosed.style.transition = 'all 0.8s ease';
+  letterClosed.style.transform = 'translateY(-100px) rotateX(80deg) scale(0.3)';
+  letterClosed.style.opacity = '0';
   
-  // Update hint
-  hint.textContent = 'Click signature to close';
-  
-  // Show open letter
   setTimeout(() => {
-    openLetter.classList.add('active');
-    closedLetter.style.display = 'none';
+    letterClosed.style.display = 'none';
+    letterOpen.classList.add('active');
     
-    // Animate text character by character
+    // Animate text word by word
     const text = letterText.textContent;
+    const words = text.split(/(\s+)/);
+    
     letterText.innerHTML = '';
     
-    text.split('').forEach((char, i) => {
+    words.forEach((word, index) => {
       const span = document.createElement('span');
-      span.textContent = char;
-      span.style.animationDelay = (i * 0.025) + 's';
+      span.className = 'word';
+      span.textContent = word;
+      span.style.animationDelay = (index * 0.06) + 's';
       letterText.appendChild(span);
     });
   }, 400);
@@ -553,50 +626,47 @@ function openLetter(e) {
 function closeLetter(e) {
   e.stopPropagation();
   
-  const closedLetter = document.getElementById('closedLetter');
-  const openLetter = document.getElementById('openLetter');
-  const hint = document.getElementById('hint');
+  const letterClosed = document.getElementById('letterClosed');
+  const letterOpen = document.getElementById('letterOpen');
   
   const rect = e.target.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
   
-  // Create magic effect
-  createMagicDust(x, y, 35);
+  // Create particle effect
+  createParticles(x, y, 30);
   
   // Hide open letter
-  openLetter.classList.remove('active');
+  letterOpen.classList.remove('active');
   
-  // Update hint
-  hint.textContent = 'Click the letter to open';
-  
-  // Show closed letter
   setTimeout(() => {
-    closedLetter.style.display = 'block';
-    closedLetter.style.opacity = '0';
-    closedLetter.style.transform = 'translateY(120px) rotateX(-60deg) scale(0.5)';
+    // Show closed letter
+    letterClosed.style.display = 'block';
+    letterClosed.style.opacity = '0';
+    letterClosed.style.transform = 'translateY(100px) rotateX(-80deg) scale(0.3)';
     
     setTimeout(() => {
-      closedLetter.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      closedLetter.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
-      closedLetter.style.opacity = '1';
+      letterClosed.style.transition = 'all 1s ease';
+      letterClosed.style.transform = 'translateY(0) rotateX(8deg) scale(1)';
+      letterClosed.style.opacity = '1';
     }, 50);
   }, 800);
 }
 
 // Initialize
-createSparks();
+createStars();
 
-document.getElementById('closedLetter').addEventListener('click', openLetter);
+// Event listeners
+document.getElementById('letterClosed').addEventListener('click', openLetter);
 document.getElementById('signature').addEventListener('click', closeLetter);
 
 // Touch support
-document.getElementById('closedLetter').addEventListener('touchend', (e) => {
+document.getElementById('letterClosed').addEventListener('touchend', function(e) {
   e.preventDefault();
-  openLetter(e);
+  openLetter();
 });
 
-document.getElementById('signature').addEventListener('touchend', (e) => {
+document.getElementById('signature').addEventListener('touchend', function(e) {
   e.preventDefault();
   closeLetter(e);
 });
